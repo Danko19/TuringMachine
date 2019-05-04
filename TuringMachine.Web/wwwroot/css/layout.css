@@ -1,0 +1,37 @@
+﻿body{
+	margin: 0px;
+	background-color: #2d2e30;
+}
+
+header{
+	background-color: #000000;
+	margin: 0;
+	height: 5vh;
+}
+
+.menu{
+	padding-top: 1%;
+}
+
+.title{
+	font: bold 16pt sans-serif;
+	color: white;
+	display: inline;
+}
+
+.container{
+	margin-top: 0px;
+	margin-bottom: 0px;
+    margin-left: 25%;
+    margin-right: 25%
+}
+
+.content {
+	margin: 0px;
+	background-color: #ffffff;
+	height: 95vh;
+}
+
+main{
+	padding-top: 50px;
+}

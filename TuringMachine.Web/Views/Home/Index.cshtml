@@ -1,0 +1,191 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_Layout";
+}
+<link rel="stylesheet" href="css/index.css">
+<div class="tape_area">
+    <button class="tape_left" onclick="tape_left()"><</button>
+    <table class="tape">
+        <tr class="tape_indexes">
+            @for (int i = -10; i <= 10; i++)
+            {
+                <td>@i</td>
+            }
+        </tr>
+        <tr class="tape_values">
+            @for (int i = -10; i <= 10; i++)
+            {
+                <td class="tape_item">
+					<select class="tape_item_select">
+						<option value=" " selected>&#8195;</option>
+					</select>
+				</td>
+            }
+        </tr>
+    </table>
+    <button class="tape_right" onclick="tape_right()">></button>
+</div>
+
+<div class="transition_table_area">
+	<table class="transition_table">
+		<tr class="transition_table_headers">
+			<td class="transition_table_item">States\Words</td>
+			<td class="transition_table_item">
+				'<input class="transition_table_word" type="text" value="&#8195;" size="1" maxlength="1" onchange="updateAlphabet(this)" readonly>'
+			</td>
+			<td class="transition_table_item">
+				<button class="transition_table_button" onClick="addWord()">Add word</button>
+			</td>
+		</tr>
+		<tr class="transition_table_state">
+			<td class="transition_table_item">
+				<div>q1</div><span class="close_hidden" hidden></span>
+			</td>
+			<td class="transition_table_item">&#8195;</td>
+		</tr>
+		<tr class="transition_table_state">
+			<td class="transition_table_item">
+				<button class="transition_table_button" onClick="addState()">Add state</button>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<script>
+    var center = 0;
+	var alphabet = [" "];
+	var items = document.getElementsByClassName("tape_item");
+	var transitionTable = document.getElementsByClassName("transition_table")[0].tBodies[0];
+    var tapeMap = new Map();
+	for(var i = 0; i < items.length; i++){
+		tapeMap.set(i - 10, items[i].children[0]);
+	}
+
+    function tape_right() {
+        center++;
+        renderTape();
+    }
+
+    function tape_left() {
+        center--;
+        renderTape();
+    }
+
+    function renderTape() {
+		console.log(center);
+		var from = center - 10;
+		var to = center + 10;
+		var indexes = document.getElementsByClassName("tape_indexes")[0].getElementsByTagName("td");
+        for (var index = from; index <= to; index++) {
+			var value = tapeMap.get(index);
+			if (value == undefined){
+				value = createTapeSelect();
+				tapeMap.set(index, value);
+			}
+			var number = index - from;
+			items[number].innerHTML = "";
+			items[number].appendChild(value);
+			indexes[number].innerHTML = index;
+        }
+    }
+	
+	function createTapeSelect(){
+		var select = document.createElement('select');
+		select.className += "tape_item_select"
+		updateSelectOptions(select);
+		return select;
+	}
+	
+	function updateSelectOptions(select){
+		var selectedIndex = select.options.selectedIndex;
+		var selectedOption = select.options[selectedIndex];
+		if (selectedOption != undefined)			
+			var previousValue = select.options[selectedIndex].value;
+		else previousValue = " ";
+		select.innerHTML = "";
+		for(var i = 0; i < alphabet.length; i++){
+			var option = document.createElement('option');
+			var word = alphabet[i];
+			option.value = word;
+			option.innerHTML = word;
+			select.appendChild(option);
+		}
+		trySelectOptionOrDefault(select, previousValue);
+	}
+	
+	function trySelectOptionOrDefault(select, val){
+		var valIndex = 0;
+		for(var i = 0; i < select.options.length; i++){
+			if (select.options[i].value == val){
+				valIndex = i;
+				break;
+			}
+		}
+		select.options.selectedIndex = valIndex;
+	}
+	
+	function addWord(){
+		var headers = transitionTable.rows[0];
+		var cellIndex = headers.cells.length - 1;
+		var wordCell = headers.insertCell(cellIndex);
+		wordCell.innerHTML = "'<input class=\"transition_table_word\" type=\"text\" size=\"1\" maxlength=\"1\" onchange=\"updateAlphabet(this)\">'";
+		wordCell.className += "transition_table_item";
+		for(var i = 1; i < transitionTable.rows.length - 1; i++){		
+			addTransitionCell(transitionTable.rows[i], cellIndex);	
+		}
+		var tableArea = document.getElementsByClassName("transition_table_area")[0];
+		tableArea.scrollLeft = tableArea.scrollWidth;
+	}
+	
+	function addState(){
+		var nextState;
+		if (transitionTable.rows.length > 2){
+			var lastIndex = transitionTable.rows.length - 2;
+			var lastRow = transitionTable.rows[lastIndex];
+			nextState = parseInt(lastRow.cells[0].children[0].innerHTML.replace("q", "")) + 1;
+		}
+		else nextState = 1;
+		var wordsCount = transitionTable.rows[0].cells.length - 2;
+		var stateRow = transitionTable.insertRow(transitionTable.rows.length - 1);
+		var stateCell = stateRow.insertCell(0);
+		stateCell.innerHTML = "<div>q" + nextState + "</div><span class=\"close\" onClick=\"deleteState(this)\"></span>";
+		stateCell.className += "transition_table_item";
+		for (var i = 1; i <= wordsCount; i++){
+			addTransitionCell(stateRow, i);	
+		}
+		var tableArea = document.getElementsByClassName("transition_table_area")[0];
+		tableArea.scrollTop = tableArea.scrollHeight;
+	}
+	
+	function addTransitionCell(row, index){
+		var cell = row.insertCell(index);
+		cell.innerHTML = "_";
+		cell.className += "transition_table_item";
+	}
+	
+	function updateAlphabet(input){
+		if (alphabet.includes(input.value)){
+			alert("Word '" + input.value + "' already exists in alphabet");
+			input.value = "";
+			return;
+		}
+		alphabet = [];
+		var words = document.getElementsByClassName("transition_table_word");
+		for(var i = 0; i < words.length; i++){
+			if (words[i].value != "")
+				alphabet.push(words[i].value);
+		}
+		for (var select of tapeMap.values()) {
+			updateSelectOptions(select);
+		}
+	}
+	
+	function deleteState(cell){
+		var row = cell.parentElement.parentElement;
+		row.parentElement.removeChild(row);
+	}
+	
+	function deleteWord(cell){
+		
+	}
+</script>
