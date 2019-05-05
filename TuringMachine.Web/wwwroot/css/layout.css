@@ -29,7 +29,7 @@ header{
 .content {
 	margin: 0px;
 	background-color: #ffffff;
-	height: 95vh;
+	min-height: 95vh;
 }
 
 main{

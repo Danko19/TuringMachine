@@ -31,7 +31,10 @@
 		<tr class="transition_table_headers">
 			<td class="transition_table_item">States\Words</td>
 			<td class="transition_table_item">
-				'<input class="transition_table_word" type="text" value="&#8195;" size="1" maxlength="1" onchange="updateAlphabet(this)" readonly>'
+				<div>
+				'<input class="transition_table_word" type="text" value="&#8195;" size="1" maxlength="1" onchange="updateWord(this)" readonly>'
+				</div>
+				<span class="close_hidden"></span>
 			</td>
 			<td class="transition_table_item">
 				<button class="transition_table_button" onClick="addWord()">Add word</button>
@@ -39,9 +42,27 @@
 		</tr>
 		<tr class="transition_table_state">
 			<td class="transition_table_item">
-				<div>q1</div><span class="close_hidden" hidden></span>
+				<div>q1</div><span class="close_hidden"></span>
 			</td>
-			<td class="transition_table_item">&#8195;</td>
+			<td class="transition_table_item">
+				<div>
+					<select class="transition_table_item_select">
+						<option value="blank" selected>...</option>
+						<option value=" ">&#8195;</option>
+					</select
+					><select class="transition_table_item_select">
+						<option value="blank" selected>...</option>
+						<option value="Left">←</option>
+						<option value="Stay">↓</option>
+						<option value="Right">→</option>
+					</select
+					><select class="transition_table_item_select">
+						<option value="blank" selected>...</option>
+						<option value="q1">q1</option>
+					</select>
+				</div
+				><span class="close" onclick="resetTransition(this)"></span>
+			</td>
 		</tr>
 		<tr class="transition_table_state">
 			<td class="transition_table_item">
@@ -128,7 +149,7 @@
 		var headers = transitionTable.rows[0];
 		var cellIndex = headers.cells.length - 1;
 		var wordCell = headers.insertCell(cellIndex);
-		wordCell.innerHTML = "'<input class=\"transition_table_word\" type=\"text\" size=\"1\" maxlength=\"1\" onchange=\"updateAlphabet(this)\">'";
+		wordCell.innerHTML = "<div>'<input class=\"transition_table_word\" type=\"text\" size=\"1\" maxlength=\"1\" onchange=\"updateWord(this)\">'</div><span class=\"close\" onClick=\"deleteWord(this)\"></span>";
 		wordCell.className += "transition_table_item";
 		for(var i = 1; i < transitionTable.rows.length - 1; i++){		
 			addTransitionCell(transitionTable.rows[i], cellIndex);	
@@ -159,16 +180,40 @@
 	
 	function addTransitionCell(row, index){
 		var cell = row.insertCell(index);
-		cell.innerHTML = "_";
 		cell.className += "transition_table_item";
+		var div = document.createElement('div');
+		var wordSelect = document.createElement('select');
+		fillSelect(wordSelect, alphabet, alphabet);
+		var transitionSelect = document.createElement('select');
+		fillSelect(transitionSelect, ["←", "↓", "→"], ["Left", "Stay", "Right"]);
+		var states = [];
+		for(var i = 1; i < transitionTable.rows.length - 1; i++){
+			states.push(transitionTable.rows[i].cells[0].children[0].innerHTML);
+		}
+		var stateSelect = document.createElement('select');
+		fillSelect(stateSelect, states, states);
+		var span = document.createElement('span');
+		span.className += "close";
+		span.onClick = function(){
+			resetTransition(span);
+		};
+		div.appendChild(wordSelect);
+		div.appendChild(transitionSelect);
+		div.appendChild(stateSelect);
+		cell.appendChild(div);
+		cell.appendChild(span);
 	}
 	
-	function updateAlphabet(input){
+	function updateWord(input){		
 		if (alphabet.includes(input.value)){
 			alert("Word '" + input.value + "' already exists in alphabet");
 			input.value = "";
 			return;
 		}
+		updateAlphabet();
+	}
+	
+	function updateAlphabet(){
 		alphabet = [];
 		var words = document.getElementsByClassName("transition_table_word");
 		for(var i = 0; i < words.length; i++){
@@ -180,12 +225,42 @@
 		}
 	}
 	
-	function deleteState(cell){
-		var row = cell.parentElement.parentElement;
+	function deleteState(span){
+		var row = span.parentElement.parentElement;
 		row.parentElement.removeChild(row);
 	}
 	
-	function deleteWord(cell){
-		
+	function deleteWord(span){
+		var cell = span.parentElement;
+		var row =  cell.parentElement;
+		var index = cell.cellIndex;
+		for(var i = 0; i < transitionTable.rows.length - 1; i++){
+			transitionTable.rows[i].deleteCell(index);
+		}
+		updateAlphabet();
+	}
+	
+	function resetTransition(span){
+		var cell = span.parentElement;
+		var selects = cell.children[0];
+		for(var i = 0; i < 3; i++){
+			selects.children[i].selectedIndex = 0;
+		}
+	}
+	
+	function fillSelect(select, texts, values){
+		select.innerHTML = "";
+		var defaultOption = document.createElement('option');
+		defaultOption.text = "...";
+		defaultOption.value = "blank";
+		select.add(defaultOption, select[0]);
+		for(var i = 1; i <= values.length; i++){			
+			var option = document.createElement('option');
+			option.text = texts[i-1];
+			option.value = values[i-1];
+			select.add(option, select[i]);
+		}
+		select.className += "transition_table_item_select";
+		select.selectedIndex = 0;
 	}
 </script>

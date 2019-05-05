@@ -29,6 +29,7 @@
 	margin-right: 5%;
 	margin-left: 5%;
 	padding: 3px;
+	overflow: auto;
 }
 
 .tape_indexes{
@@ -62,15 +63,16 @@
 
 .transition_table_item{
 	border:1px solid black;
-	width: 100px;
+	width: 110px;
 	height: 25px;
-	min-width: 100px;
-	min-height: 100px;
-	max-width: 100px;
-	max-height: 100px;
+	min-width: 110px;
+	min-height: 25px;
+	max-width: 110px;
+	max-height: 25px;
 	text-align-last: center;
 	text-align: center;
 	position: relative;
+	overflow: hidden;
 }
 
 .transition_table_item div{	
@@ -110,4 +112,10 @@ transform: rotate(45deg);
 }
 .close:after {
 transform: rotate(-45deg);
+}
+
+.transition_table_item_select{
+	display: inline-block;
+    -webkit-appearance: none;
+	width: 25px;
 }
