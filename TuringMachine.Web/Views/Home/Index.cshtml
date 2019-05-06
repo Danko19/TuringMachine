@@ -4,26 +4,28 @@
 }
 <link rel="stylesheet" href="css/index.css">
 <div class="tape_area">
-    <button class="tape_left" onclick="tape_left()"><</button>
-    <table class="tape">
-        <tr class="tape_indexes">
-            @for (int i = -10; i <= 10; i++)
-            {
-                <td>@i</td>
-            }
-        </tr>
-        <tr class="tape_values">
-            @for (int i = -10; i <= 10; i++)
-            {
-                <td class="tape_item">
-					<select class="tape_item_select">
-						<option value=" " selected>&#8195;</option>
-					</select>
-				</td>
-            }
-        </tr>
-    </table>
-    <button class="tape_right" onclick="tape_right()">></button>
+	<div class="tape">
+		<button class="tape_left" onclick="tape_left()"><</button>
+		<table class="tape_table">
+			<tr class="tape_indexes">
+				@for (int i = -10; i <= 10; i++)
+				{
+					<td>@i</td>
+				}
+			</tr>
+			<tr class="tape_values">
+				@for (int i = -10; i <= 10; i++)
+				{
+					<td class="tape_item">
+						<select class="tape_item_select">
+							<option value=" " selected>&#8195;</option>
+						</select>
+					</td>
+				}
+			</tr>
+		</table>
+		<button class="tape_right" onclick="tape_right()">></button>
+	</div>
 </div>
 
 <div class="transition_table_area">
