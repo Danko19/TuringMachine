@@ -18,7 +18,7 @@
                 {
                     <td class="tape_item">
                         <select class="tape_item_select" disabled>
-                            <option value=" " selected>&#8195;</option>
+                            <option value=" " selected>&#32;</option>
                         </select>
                     </td>
                 }
@@ -30,7 +30,7 @@
 <div class="executing_area">
 	<div class="executing_buttons_area">
 	</div>
-	<select class="executing_log_area" size = 25;>
+	<select class="executing_log_area" size = 25 onChange="applySnapshot()">
 	</select>
 </div>
 <div class="transition_table_area">
@@ -39,7 +39,7 @@
             <td class="transition_table_item">States\Words</td>
             <td class="transition_table_item">
                 <div>
-                    '<input class="transition_table_word" type="text" value="&#8195;" size="1" maxlength="1" onchange="updateWord(this)" readonly>'
+                    '<input class="transition_table_word" type="text" value="&#32;" size="1" maxlength="1" onchange="updateWord(this)" readonly>'
                 </div><span class="close_hidden"></span>
             </td>
             <td class="transition_table_item" style="display: none">
@@ -54,7 +54,7 @@
                 <div>
                     <select class="transition_table_word_select" disabled>
                         <option value="blank" selected>...</option>
-                        <option value=" ">&#8195;</option>
+                        <option value=" ">&#32;</option>
                     </select><select class="transition_table_move_select" disabled>
                         <option value="blank" selected>...</option>
                         <option value="Left">←</option>
@@ -393,7 +393,7 @@
 				trySelectOptionOrDefault(states[i], transition.state);
 			}
 			
-			loadSnapShots();
+			loadSnapshots();
 		}
 		catch(e){
 			alert("File has incorrect format: " + e);
@@ -409,7 +409,7 @@
 		element.click();
 	}
 	
-	function loadSnapShots(){
+	function loadSnapshots(){
 		var executingSnapshots = turingMachine.executingSnapshots;
 		var list = document.getElementsByClassName("executing_log_area")[0];
 		list.innerHTML = "";
@@ -425,5 +425,23 @@
 		var moves = ["←", "↓", "→"];
 		var index = transition.MoveType + 1;
 		return "'" + transition.SetWord + "' , " + moves[index] + " , " + transition.NextState;
+	}
+	
+	function applySnapshot(){
+		var list = document.getElementsByClassName("executing_log_area")[0];
+		var selectedIndex = list.options.selectedIndex;
+		if (selectedIndex == -1){
+			
+			return;
+		}		
+		
+		var snapshot = turingMachine.executingSnapshots[selectedIndex];
+		for(var i in snapshot.Tape){
+			var index = parseInt(i);
+			var select = getOrCreateTapeSelect(index);
+			var value = snapshot.Tape[index];
+			trySelectOptionOrDefault(select, value);
+		}
+		renderTape();
 	}
 </script>
