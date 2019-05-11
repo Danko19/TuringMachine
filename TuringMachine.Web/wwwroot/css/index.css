@@ -154,3 +154,7 @@ transform: rotate(-45deg);
 	display: inline-block;
 	overflow: hidden;
 }
+
+#file-input{
+	display: none; 
+}

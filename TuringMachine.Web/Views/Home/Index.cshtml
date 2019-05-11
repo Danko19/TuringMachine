@@ -74,20 +74,40 @@
 		</tr>
 	</table>
 </div>
-<div id="hidden_form_container"></div>
 <div class="buttons_area">
 	<button class="control_button" onClick="save()">Save</button>
-	<button class="control_button" onClick="load()">Load</button>
+	<button class="control_button" onClick="openFile()">Load</button>
 	<button class="control_button" onClick="build()">Build</button>
 <div>
+<div id="hidden_form_container"></div>
+<input id="file-input" type="file" name="name" onChange="load(this)"/>
 <script>
-    var center = 0;
-	var alphabet = [" "];
-	var items = document.getElementsByClassName("tape_item");
-	var transitionTable = document.getElementsByClassName("transition_table")[0].tBodies[0];
-    var tapeMap = new Map();
-	for(var i = 0; i < items.length; i++){
-		tapeMap.set(i - 10, items[i].children[0]);
+    var center, alphabet, items, transitionTable, tapeMap;
+	init();
+	
+	function init(){
+		center = 0;
+		alphabet = [" "];
+		items = document.getElementsByClassName("tape_item");
+		transitionTable = document.getElementsByClassName("transition_table")[0].tBodies[0];
+		tapeMap = new Map();
+		for(var i = 0; i < items.length; i++){
+			tapeMap.set(i - 10, items[i].children[0]);
+		}
+		updateAlphabet();
+        renderTape();
+		for (var i = 2; i < transitionTable.rows.length - 1;){
+			transitionTable.deleteRow(2);
+		}
+		var headers = transitionTable.rows[0];
+		var firstState = transitionTable.rows[1];
+		for (var i = 2; i < headers.cells.length - 1;){
+			headers.deleteCell(2);
+			firstState.deleteCell(2);
+		}
+		firstState.cells[1].children[1].click();
+		updateAlphabet();
+        renderTape();
 	}
 
     function tape_right() {
@@ -105,17 +125,22 @@
 		var to = center + 10;
 		var indexes = document.getElementsByClassName("tape_indexes")[0].getElementsByTagName("td");
         for (var index = from; index <= to; index++) {
-			var value = tapeMap.get(index);
-			if (value == undefined){
-				value = createTapeSelect();
-				tapeMap.set(index, value);
-			}
+			var value = getOrCreateTapeSelect(index);
 			var number = index - from;
 			items[number].innerHTML = "";
 			items[number].appendChild(value);
 			indexes[number].innerHTML = index;
         }
     }
+	
+	function getOrCreateTapeSelect(index){
+		var value = tapeMap.get(index);
+		if (value == undefined){
+			value = createTapeSelect();
+			tapeMap.set(index, value);
+		}
+		return value;
+	}
 	
 	function createTapeSelect(){
 		var select = document.createElement('select');
@@ -162,6 +187,7 @@
 		}
 		var tableArea = document.getElementsByClassName("transition_table_area")[0];
 		tableArea.scrollLeft = tableArea.scrollWidth;
+		return wordCell;
 	}
 	
 	function addState(){
@@ -183,6 +209,7 @@
 		updateStateSelects();
 		var tableArea = document.getElementsByClassName("transition_table_area")[0];
 		tableArea.scrollTop = tableArea.scrollHeight;
+		return stateCell;
 	}
 	
 	function addTransitionCell(row, index){
@@ -337,5 +364,68 @@
 		form.appendChild(input);
 		document.getElementById('hidden_form_container').appendChild(form);
 		form.submit();
+	}
+	
+	function openFile(){
+		document.getElementById("file-input").click();
+	}
+	
+	function load(input){
+		var file = input.files[0];
+		if (file == undefined)
+			return;
+		var reader = new FileReader();
+		reader.onload = function(){
+			var text = reader.result;
+			parse(text);
+		};
+		var f = reader.readAsText(file);
+    }
+	
+	function parse(json){
+		try{
+			var turingMachine = JSON.parse(json);
+			init();
+			for(var i = 1; i < turingMachine.alphabet.length; i++){
+				var cell = addWord();
+				var input = cell.children[0].children[0];
+				input.value = turingMachine.alphabet[i].charAt(0);
+				updateWord(input);
+			}
+			for(var i = 1; i < turingMachine.states.length; i++){
+				var cell = addState();
+				var div = cell.children[0];
+				div.innerHTML = turingMachine.states[i];
+			}
+			updateStateSelects();
+			for (var i = 0; i < turingMachine.tape.length; i++){
+				var item = turingMachine.tape[i];
+				var select = getOrCreateTapeSelect(item.index);
+				trySelectOptionOrDefault(select, item.value);
+			}
+			renderTape();
+			
+			var words = document.getElementsByClassName("transition_table_word_select");
+			var moves = document.getElementsByClassName("transition_table_move_select");
+			var states = document.getElementsByClassName("transition_table_state_select");
+			for (var i = 0; i < words.length; i++){
+				var transition = turingMachine.transitions[i];
+				trySelectOptionOrDefault(words[i], transition.word);
+				trySelectOptionOrDefault(moves[i], transition.move);
+				trySelectOptionOrDefault(states[i], transition.state);
+			}
+		}
+		catch(e){
+			alert("File has incorrect format: " + e);
+		}
+	}
+	
+	function save(){
+		var text = createJson();
+		var filename = "TuringMachine_" + (new Date(Date.now())).toDateString();
+		var element = document.createElement('a');
+		element.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(text));
+		element.setAttribute('download', filename);element.style.display = 'none';
+		element.click();
 	}
 </script>
