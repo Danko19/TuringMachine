@@ -116,22 +116,21 @@
 	function createTapeSelect(){
 		var select = document.createElement('select');
 		select.className += "tape_item_select"
-		updateSelectOptions(select);
+		updateSelectOptions(select, alphabet, alphabet);
 		return select;
 	}
 	
-	function updateSelectOptions(select){
+	function updateSelectOptions(select, texts, values){
 		var selectedIndex = select.options.selectedIndex;
 		var selectedOption = select.options[selectedIndex];
 		if (selectedOption != undefined)			
 			var previousValue = select.options[selectedIndex].value;
-		else previousValue = " ";
+		else previousValue = undefined;
 		select.innerHTML = "";
-		for(var i = 0; i < alphabet.length; i++){
+		for(var i = 0; i < texts.length; i++){
 			var option = document.createElement('option');
-			var word = alphabet[i];
-			option.value = word;
-			option.innerHTML = word;
+			option.value = values[i];
+			option.innerHTML = texts[i];
 			select.appendChild(option);
 		}
 		trySelectOptionOrDefault(select, previousValue);
@@ -224,7 +223,7 @@
 				alphabet.push(words[i].value);
 		}
 		for (var select of tapeMap.values()) {
-			updateSelectOptions(select);
+			updateSelectOptions(select, alphabet, alphabet);
 		}
 	}
 	
