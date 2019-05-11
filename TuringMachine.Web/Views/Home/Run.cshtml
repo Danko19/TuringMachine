@@ -27,7 +27,12 @@
         <button class="tape_right" onclick="tape_right()">></button>
     </div>
 </div>
-
+<div class="executing_area">
+	<div class="executing_buttons_area">
+	</div>
+	<select class="executing_log_area" size = 25;>
+	</select>
+</div>
 <div class="transition_table_area">
     <table class="transition_table">
         <tr class="transition_table_headers">
@@ -78,13 +83,8 @@
 <div id="hidden_form_container"></div>
 <input id="file-input" type="file" name="name" onChange="load(this)" />
 <script>
-    var center, alphabet, items, transitionTable, tapeMap;
-    init();
-
-    @if (ViewBag.Json != null)
-    {
-    }
-
+    var center, alphabet, items, transitionTable, tapeMap, turingMachine;
+    init();	
     parse("@Html.Raw(ViewBag.Json)");
 
 	function init(){
@@ -318,36 +318,7 @@
 	}
 
 	function createJson(){
-		var machine = new Object();
-		machine.tape = [];
-		for (var index of tapeMap.keys()){
-			var select = tapeMap.get(index);
-			var selectedOption = select[select.selectedIndex];
-			if (selectedOption != undefined)
-				var val = selectedOption.value;
-			else val = " ";
-			var tapeItem = new Object();
-			tapeItem.index = index;
-			tapeItem.value = val;
-			machine.tape.push(tapeItem);
-		}
-		machine.alphabet = alphabet;
-		machine.states = getAllStates();
-		machine.transitions = [];
-
-		var words = document.getElementsByClassName("transition_table_word_select");
-		var moves = document.getElementsByClassName("transition_table_move_select");
-		var states = document.getElementsByClassName("transition_table_state_select");
-
-		for (var i = 0; i < words.length; i++){
-			var transition = new Object();
-			transition.word = getSelectedItem(words[i]);
-			transition.move = getSelectedItem(moves[i]);
-			transition.state = getSelectedItem(states[i]);
-			machine.transitions.push(transition);
-		}
-
-		return JSON.stringify(machine);
+		return JSON.stringify(turingMachine);
 	}
 
 	function getSelectedItem(select){
@@ -390,7 +361,7 @@
 
 	function parse(json){
 		try{
-			var turingMachine = JSON.parse(json);
+			turingMachine = JSON.parse(json);
 			console.log(turingMachine);
 			init();
 			for(var i = 1; i < turingMachine.alphabet.length; i++){
@@ -421,6 +392,8 @@
 				trySelectOptionOrDefault(moves[i], transition.move);
 				trySelectOptionOrDefault(states[i], transition.state);
 			}
+			
+			loadSnapShots();
 		}
 		catch(e){
 			alert("File has incorrect format: " + e);
@@ -435,4 +408,22 @@
 		element.setAttribute('download', filename);element.style.display = 'none';
 		element.click();
 	}
-        </script>
+	
+	function loadSnapShots(){
+		var executingSnapshots = turingMachine.executingSnapshots;
+		var list = document.getElementsByClassName("executing_log_area")[0];
+		list.innerHTML = "";
+		for (var i = 0; i < executingSnapshots.length; i++){
+			var transition = executingSnapshots[i].LastTransition;
+			var option = document.createElement("option");
+			option.innerHTML = (i + 1) + ") " + getLogString(transition);
+			list.appendChild(option);
+		}
+	}
+	
+	function getLogString(transition){
+		var moves = ["←", "↓", "→"];
+		var index = transition.MoveType + 1;
+		return "'" + transition.SetWord + "' , " + moves[index] + " , " + transition.NextState;
+	}
+</script>

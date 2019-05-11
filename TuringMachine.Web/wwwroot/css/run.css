@@ -140,7 +140,7 @@ transform: rotate(-45deg);
 	display: none;
 }
 
-.buttons_area{	
+.buttons_area{
 	width: 90%;
 	margin-right: 5%;
 	margin-left: 5%;
@@ -157,4 +157,25 @@ transform: rotate(-45deg);
 
 #file-input{
 	display: none; 
+}
+
+.executing_area{
+	border:1px solid black;
+	width: 90%;
+	height: 254px;
+	max-height: 252px;
+	margin-right: 5%;
+	margin-left: 5%;
+	margin-top: 25px;
+	padding: 3px;
+}
+
+.executing_log_area{
+	border:1px solid black;
+	width: 40%;
+	height: 250px;
+	padding: 0;
+	margin: 0;
+	margin-left: 60%;
+	overflow: auto;
 }
