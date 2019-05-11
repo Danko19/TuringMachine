@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using TuringMachine.Domain;
+﻿using TuringMachine.Domain;
 
 namespace TuringMachine.Web.Models
 {
@@ -10,6 +8,7 @@ namespace TuringMachine.Web.Models
         public char[] Alphabet { get; set; }
         public string[] States { get; set; }
         public TransitionItem[] Transitions { get; set; }
+        public ExecutingSnapshot[] ExecutingSnapshots { get; set; }
     }
 
     public class TapeItem

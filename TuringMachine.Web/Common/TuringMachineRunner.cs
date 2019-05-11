@@ -10,9 +10,9 @@ namespace TuringMachine.Web.Common
     {
         private const string terminalState = "stop";
 
-        public static List<ExecutingSnapshot> Run(TuringMachineModel model)
+        public static ExecutingSnapshot[] Run(TuringMachineModel model)
         {
-            return Build(model).ExecuteWithSnapshots().Take(500).ToList();
+            return Build(model).ExecuteWithSnapshots().Take(500).ToArray();
         }
 
         private static Domain.TuringMachine Build(TuringMachineModel model)

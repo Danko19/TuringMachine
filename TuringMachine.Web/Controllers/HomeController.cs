@@ -9,19 +9,16 @@ namespace TuringMachine.Web.Controllers
     {
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
+            return View("Index");
         }
 
         [HttpPost]
-        public IActionResult Compile(string turingMachineJson)
+        public IActionResult Build(string turingMachineJson)
         {
             var turingMachineModel = JsonConvert.DeserializeObject<TuringMachineModel>(turingMachineJson);
             var executingSnapshots = TuringMachineRunner.Run(turingMachineModel);
+            turingMachineModel.ExecutingSnapshots = executingSnapshots;
+            var resultJson = JsonConvert.SerializeObject(turingMachineModel);
             return Index();
         }
     }

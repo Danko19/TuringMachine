@@ -74,8 +74,12 @@
 		</tr>
 	</table>
 </div>
-<div id="hidden_form_container" style="display:none;"></div>
-<button onClick="compile()">Build</button>
+<div id="hidden_form_container"></div>
+<div class="buttons_area">
+	<button class="control_button" onClick="save()">Save</button>
+	<button class="control_button" onClick="load()">Load</button>
+	<button class="control_button" onClick="build()">Build</button>
+<div>
 <script>
     var center = 0;
 	var alphabet = [" "];
@@ -321,10 +325,10 @@
 		else return undefined;
 	}
 	
-	function compile(){
+	function build(){
 		var form, input;
 		form = document.createElement('form');
-		form.action = 'Home/Compile';
+		form.action = 'Home/Build';
 		form.method = 'post';
 		input = document.createElement('input');
 		input.type = 'hidden';
