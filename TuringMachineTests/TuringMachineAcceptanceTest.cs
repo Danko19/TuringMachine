@@ -25,7 +25,7 @@ namespace TuringMachineTests
                 .AddState("q2")
                 .AddTransition(' ', new Transition('c', MoveType.Stay, "q0"));
             var turingMachine = turingMachineBuilder.Build();
-            var executeWithSnapshots = turingMachine.ExecuteWithSnapshots().Take(10).Select(x => $"{new string(x.Left)}_{x.Current}_{new string(x.Right)}");
+            var executeWithSnapshots = turingMachine.ExecuteWithSnapshots().Take(10).ToArray();
         }
     }
 }

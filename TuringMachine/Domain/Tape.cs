@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TuringMachine.Domain
 {
@@ -73,6 +74,23 @@ namespace TuringMachine.Domain
         public IEnumerable<char> GetRight()
         {
             return GetRangeBeforeEnd(current.Next, null);
+        }
+
+        public Dictionary<int, char> ToDictionary()
+        {
+            var result = new Dictionary<int, char>();
+
+            var left = GetLeft().ToArray();
+            for (var i = 0 ; i < left.Length; i++)
+                result.Add(-left.Length + i, left[i]);
+
+            result[0] = Current;
+
+            var right = GetRight().ToArray();
+            for (var i = 0; i < right.Length; i++)
+                result.Add(1 + i, right[i]);
+
+            return result;
         }
 
         private static LinkedListNode<char> CreateNewNode()

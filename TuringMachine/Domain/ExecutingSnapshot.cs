@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace TuringMachine.Domain
 {
@@ -9,15 +9,11 @@ namespace TuringMachine.Domain
         {
             if (tape == null)
                 throw new ArgumentNullException(nameof(tape));
-            Left = tape.GetLeft().ToArray();
-            Current = tape.Current;
-            Right = tape.GetRight().ToArray();
+            Tape = tape.ToDictionary();
             LastTransition = lastTransition ?? throw new ArgumentNullException(nameof(lastTransition));
         }
 
-        public char[] Left { get; }
-        public char Current { get; }
-        public char[] Right { get; }
+        public Dictionary<int, char> Tape { get; }
         public Transition LastTransition { get; }
     }
 }
