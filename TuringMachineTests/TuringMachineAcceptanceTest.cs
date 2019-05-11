@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
+using FluentAssertions;
 using NUnit.Framework;
 using TuringMachine.Builders;
 using TuringMachine.Domain;
@@ -25,7 +27,15 @@ namespace TuringMachineTests
                 .AddState("q2")
                 .AddTransition(' ', new Transition('c', MoveType.Stay, "q0"));
             var turingMachine = turingMachineBuilder.Build();
-            var executeWithSnapshots = turingMachine.ExecuteWithSnapshots().Take(10).ToArray();
+            var lastSnapshot = turingMachine.ExecuteWithSnapshots().Take(10).Last();
+            lastSnapshot.Tape.Should().BeEquivalentTo(new Dictionary<int,char>
+            {
+                {-4, ' ' },
+                {-3, 'a' },
+                {-2, 'b' },
+                {-1, 'c' },
+                {0, 'c' },
+            });
         }
     }
 }

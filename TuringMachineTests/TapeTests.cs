@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
-using TuringMachine;
 using TuringMachine.Domain;
 
 namespace TuringMachineTests
