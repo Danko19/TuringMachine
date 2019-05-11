@@ -96,7 +96,6 @@
     }
 
     function renderTape() {
-		console.log(center);
 		var from = center - 10;
 		var to = center + 10;
 		var indexes = document.getElementsByClassName("tape_indexes")[0].getElementsByTagName("td");
@@ -125,11 +124,7 @@
 	}
 	
 	function updateSelectOptions(select, texts, values){
-		var selectedIndex = select.options.selectedIndex;
-		var selectedOption = select.options[selectedIndex];
-		if (selectedOption != undefined)			
-			var previousValue = select.options[selectedIndex].value;
-		else previousValue = undefined;
+		var previousValue = getSelectedItem(select);
 		select.innerHTML = "";
 		for(var i = 0; i < texts.length; i++){
 			var option = document.createElement('option');
@@ -201,7 +196,7 @@
 		stateSelect.className += "transition_table_state_select";
 		var span = document.createElement('span');
 		span.className += "close";
-		span.onClick = function(){
+		span.onclick = function(){
 			resetTransition(span);
 		};
 		div.appendChild(wordSelect);
@@ -282,5 +277,46 @@
 			states.push(transitionTable.rows[i].cells[0].children[0].innerHTML);
 		}
 		return states;
+	}
+	
+	function createJson(){
+		var machine = new Object();
+		machine.tape = [];
+		for (var index of tapeMap.keys()){
+			var select = tapeMap.get(index);
+			var selectedOption = select[select.selectedIndex];
+			if (selectedOption != undefined)
+				var value = selectedOption.value;
+			else value = " ";
+			var tapeItem = new Object();
+			tapeItem.index = index;
+			tapeItem.value = value;
+			machine.tape.push(tapeItem);
+		}
+		machine.alphabet = alphabet;
+		machine.states = getAllStates();
+		machine.transitions = [];
+		
+		var words = document.getElementsByClassName("transition_table_word_select");
+		var moves = document.getElementsByClassName("transition_table_move_select");
+		var states = document.getElementsByClassName("transition_table_state_select");
+		
+		for (var i = 0; i < words.length; i++){
+			var transition = new Object();
+			transition.word = getSelectedItem(words[i]);
+			transition.move = getSelectedItem(moves[i]);
+			transition.state = getSelectedItem(states[i]);
+			machine.transitions.push(transition);
+		}
+		
+		return JSON.stringify(machine);
+	}
+	
+	function getSelectedItem(select){		
+		var selectedIndex = select.options.selectedIndex;
+		var selectedOption = select.options[selectedIndex];
+		if (selectedOption != undefined)			
+			return select.options[selectedIndex].value;
+		else return undefined;
 	}
 </script>
