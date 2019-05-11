@@ -35,8 +35,8 @@
 			<td class="transition_table_item">
 				<div>
 				'<input class="transition_table_word" type="text" value="&#8195;" size="1" maxlength="1" onchange="updateWord(this)" readonly>'
-				</div>
-				<span class="close_hidden"></span>
+				</div
+				><span class="close_hidden"></span>
 			</td>
 			<td class="transition_table_item">
 				<button class="transition_table_button" onClick="addWord()">Add word</button>
@@ -48,18 +48,19 @@
 			</td>
 			<td class="transition_table_item">
 				<div>
-					<select class="transition_table_item_select">
+					<select class="transition_table_word_select">
 						<option value="blank" selected>...</option>
 						<option value=" ">&#8195;</option>
 					</select
-					><select class="transition_table_item_select">
+					><select class="transition_table_move_select">
 						<option value="blank" selected>...</option>
 						<option value="Left">←</option>
 						<option value="Stay">↓</option>
 						<option value="Right">→</option>
 					</select
-					><select class="transition_table_item_select">
+					><select class="transition_table_state_select">
 						<option value="blank" selected>...</option>
+						<option value="stop">Stop</option>
 						<option value="q1">q1</option>
 					</select>
 				</div
@@ -185,15 +186,15 @@
 		cell.className += "transition_table_item";
 		var div = document.createElement('div');
 		var wordSelect = document.createElement('select');
+		wordSelect.className += "transition_table_word_select";
 		fillSelect(wordSelect, alphabet, alphabet);
 		var transitionSelect = document.createElement('select');
+		transitionSelect.className += "transition_table_move_select";
 		fillSelect(transitionSelect, ["←", "↓", "→"], ["Left", "Stay", "Right"]);
-		var states = [];
-		for(var i = 1; i < transitionTable.rows.length - 1; i++){
-			states.push(transitionTable.rows[i].cells[0].children[0].innerHTML);
-		}
+		var states = getAllStates();
 		var stateSelect = document.createElement('select');
 		fillSelect(stateSelect, states, states);
+		stateSelect.className += "transition_table_state_select";
 		var span = document.createElement('span');
 		span.className += "close";
 		span.onClick = function(){
@@ -262,7 +263,24 @@
 			option.value = values[i-1];
 			select.add(option, select[i]);
 		}
-		select.className += "transition_table_item_select";
 		select.selectedIndex = 0;
+	}
+	
+	function updateStateSelects(){
+		var states = getAllStates();
+		var texts = ["Stop"].concat(states);
+		var values = ["stop"].concat(states);
+		var selects = document.getElementsByClassName("transition_table_state_select");
+		for (var i = 0; i < select.length; i++){
+			var select = selects[i];
+		}
+	}
+	
+	function getAllStates(){
+		var states = [];
+		for(var i = 1; i < transitionTable.rows.length - 1; i++){
+			states.push(transitionTable.rows[i].cells[0].children[0].innerHTML);
+		}
+		return states;
 	}
 </script>
