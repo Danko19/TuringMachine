@@ -19,7 +19,7 @@ namespace TuringMachine.Web.Controllers
             var executingSnapshots = TuringMachineRunner.Run(turingMachineModel);
             turingMachineModel.ExecutingSnapshots = executingSnapshots;
             var resultJson = JsonConvert.SerializeObject(turingMachineModel);
-            return Index();
+            return View("Run");
         }
     }
 }

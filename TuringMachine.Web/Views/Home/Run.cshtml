@@ -1,90 +1,86 @@
 ﻿@{
-    ViewData["Title"] = "Build";
+    ViewData["Title"] = "Run";
     Layout = "_Layout";
 }
-<link rel="stylesheet" href="~/css/index.css">
+<link rel="stylesheet" href="~/css/run.css">
 <div class="tape_area">
-	<div class="tape">
-		<button class="tape_left" onclick="tape_left()"><</button>
-		<table class="tape_table">
-			<tr class="tape_indexes">
-				@for (int i = -10; i <= 10; i++)
-				{
-					<td>@i</td>
-				}
-			</tr>
-			<tr class="tape_values">
-				@for (int i = -10; i <= 10; i++)
-				{
-					<td class="tape_item">
-						<select class="tape_item_select">
-							<option value=" " selected>&#8195;</option>
-						</select>
-					</td>
-				}
-			</tr>
-		</table>
-		<button class="tape_right" onclick="tape_right()">></button>
-	</div>
+    <div class="tape">
+        <button class="tape_left" onclick="tape_left()"><</button>
+        <table class="tape_table">
+            <tr class="tape_indexes">
+                @for (int i = -10; i <= 10; i++)
+                {
+                    <td>@i</td>
+                }
+            </tr>
+            <tr class="tape_values">
+                @for (int i = -10; i <= 10; i++)
+                {
+                    <td class="tape_item">
+                        <select class="tape_item_select">
+                            <option value=" " selected>&#8195;</option>
+                        </select>
+                    </td>
+                }
+            </tr>
+        </table>
+        <button class="tape_right" onclick="tape_right()">></button>
+    </div>
 </div>
 
 <div class="transition_table_area">
-	<table class="transition_table">
-		<tr class="transition_table_headers">
-			<td class="transition_table_item">States\Words</td>
-			<td class="transition_table_item">
-				<div>
-				'<input class="transition_table_word" type="text" value="&#8195;" size="1" maxlength="1" onchange="updateWord(this)" readonly>'
-				</div
-				><span class="close_hidden"></span>
-			</td>
-			<td class="transition_table_item">
-				<button class="transition_table_button" onClick="addWord()">Add word</button>
-			</td>
-		</tr>
-		<tr class="transition_table_state">
-			<td class="transition_table_item">
-				<div>q0</div><span class="close_hidden"></span>
-			</td>
-			<td class="transition_table_item">
-				<div>
-					<select class="transition_table_word_select">
-						<option value="blank" selected>...</option>
-						<option value=" ">&#8195;</option>
-					</select
-					><select class="transition_table_move_select">
-						<option value="blank" selected>...</option>
-						<option value="Left">←</option>
-						<option value="Stay">↓</option>
-						<option value="Right">→</option>
-					</select
-					><select class="transition_table_state_select">
-						<option value="blank" selected>...</option>
-						<option value="stop">Stop</option>
-						<option value="q0">q0</option>
-					</select>
-				</div
-				><span class="close" onclick="resetTransition(this)"></span>
-			</td>
-		</tr>
-		<tr class="transition_table_state">
-			<td class="transition_table_item">
-				<button class="transition_table_button" onClick="addState()">Add state</button>
-			</td>
-		</tr>
-	</table>
+    <table class="transition_table">
+        <tr class="transition_table_headers">
+            <td class="transition_table_item">States\Words</td>
+            <td class="transition_table_item">
+                <div>
+                    '<input class="transition_table_word" type="text" value="&#8195;" size="1" maxlength="1" onchange="updateWord(this)" readonly>'
+                </div><span class="close_hidden"></span>
+            </td>
+            <td class="transition_table_item">
+                <button class="transition_table_button" onClick="addWord()">Add word</button>
+            </td>
+        </tr>
+        <tr class="transition_table_state">
+            <td class="transition_table_item">
+                <div>q0</div><span class="close_hidden"></span>
+            </td>
+            <td class="transition_table_item">
+                <div>
+                    <select class="transition_table_word_select">
+                        <option value="blank" selected>...</option>
+                        <option value=" ">&#8195;</option>
+                    </select><select class="transition_table_move_select">
+                        <option value="blank" selected>...</option>
+                        <option value="Left">←</option>
+                        <option value="Stay">↓</option>
+                        <option value="Right">→</option>
+                    </select><select class="transition_table_state_select">
+                        <option value="blank" selected>...</option>
+                        <option value="stop">Stop</option>
+                        <option value="q0">q0</option>
+                    </select>
+                </div><span class="close" onclick="resetTransition(this)"></span>
+            </td>
+        </tr>
+        <tr class="transition_table_state">
+            <td class="transition_table_item">
+                <button class="transition_table_button" onClick="addState()">Add state</button>
+            </td>
+        </tr>
+    </table>
 </div>
 <div class="buttons_area">
-	<button class="control_button" onClick="save()">Save</button>
-	<button class="control_button" onClick="openFile()">Load</button>
-	<button class="control_button" onClick="build()">Build</button>
-<div>
-<div id="hidden_form_container"></div>
-<input id="file-input" type="file" name="name" onChange="load(this)"/>
-<script>
+    <button class="control_button" onClick="save()">Save</button>
+    <button class="control_button" onClick="openFile()">Load</button>
+    <button class="control_button" onClick="build()">Build</button>
+    <div>
+        <div id="hidden_form_container"></div>
+        <input id="file-input" type="file" name="name" onChange="load(this)" />
+        <script>
     var center, alphabet, items, transitionTable, tapeMap;
 	init();
-	
+
 	function init(){
 		center = 0;
 		alphabet = [" "];
@@ -132,7 +128,7 @@
 			indexes[number].innerHTML = index;
         }
     }
-	
+
 	function getOrCreateTapeSelect(index){
 		var value = tapeMap.get(index);
 		if (value == undefined){
@@ -141,18 +137,18 @@
 		}
 		return value;
 	}
-	
+
 	function createTapeSelect(){
 		var select = document.createElement('select');
 		select.className += "tape_item_select"
 		updateSelectOptions(select, alphabet, alphabet);
 		return select;
 	}
-	
+
 	function updateTransitionSelectOptions(select, texts, values){
 		updateSelectOptions(select, ["..."].concat(texts), ["blank"].concat(values));
 	}
-	
+
 	function updateSelectOptions(select, texts, values){
 		var previousValue = getSelectedItem(select);
 		select.innerHTML = "";
@@ -164,7 +160,7 @@
 		}
 		trySelectOptionOrDefault(select, previousValue);
 	}
-	
+
 	function trySelectOptionOrDefault(select, val){
 		var valIndex = 0;
 		for(var i = 0; i < select.options.length; i++){
@@ -175,21 +171,21 @@
 		}
 		select.options.selectedIndex = valIndex;
 	}
-	
+
 	function addWord(){
 		var headers = transitionTable.rows[0];
 		var cellIndex = headers.cells.length - 1;
 		var wordCell = headers.insertCell(cellIndex);
 		wordCell.innerHTML = "<div>'<input class=\"transition_table_word\" type=\"text\" size=\"1\" maxlength=\"1\" onchange=\"updateWord(this)\">'</div><span class=\"close\" onClick=\"deleteWord(this)\"></span>";
 		wordCell.className += "transition_table_item";
-		for(var i = 1; i < transitionTable.rows.length - 1; i++){		
-			addTransitionCell(transitionTable.rows[i], cellIndex);	
+		for(var i = 1; i < transitionTable.rows.length - 1; i++){
+			addTransitionCell(transitionTable.rows[i], cellIndex);
 		}
 		var tableArea = document.getElementsByClassName("transition_table_area")[0];
 		tableArea.scrollLeft = tableArea.scrollWidth;
 		return wordCell;
 	}
-	
+
 	function addState(){
 		var nextState;
 		if (transitionTable.rows.length > 2){
@@ -204,14 +200,14 @@
 		stateCell.innerHTML = "<div>q" + nextState + "</div><span class=\"close\" onClick=\"deleteState(this)\"></span>";
 		stateCell.className += "transition_table_item";
 		for (var i = 1; i <= wordsCount; i++){
-			addTransitionCell(stateRow, i);	
+			addTransitionCell(stateRow, i);
 		}
 		updateStateSelects();
 		var tableArea = document.getElementsByClassName("transition_table_area")[0];
 		tableArea.scrollTop = tableArea.scrollHeight;
 		return stateCell;
 	}
-	
+
 	function addTransitionCell(row, index){
 		var cell = row.insertCell(index);
 		cell.className += "transition_table_item";
@@ -237,8 +233,8 @@
 		cell.appendChild(div);
 		cell.appendChild(span);
 	}
-	
-	function updateWord(input){		
+
+	function updateWord(input){
 		if (alphabet.includes(input.value)){
 			alert("Word '" + input.value + "' already exists in alphabet");
 			input.value = "";
@@ -246,7 +242,7 @@
 		}
 		updateAlphabet();
 	}
-	
+
 	function updateAlphabet(){
 		alphabet = [];
 		var words = document.getElementsByClassName("transition_table_word");
@@ -259,13 +255,13 @@
 		}
 		updateWordSelects();
 	}
-	
+
 	function deleteState(span){
 		var row = span.parentElement.parentElement;
 		row.parentElement.removeChild(row);
 		updateStateSelects();
 	}
-	
+
 	function deleteWord(span){
 		var cell = span.parentElement;
 		var row =  cell.parentElement;
@@ -275,7 +271,7 @@
 		}
 		updateAlphabet();
 	}
-	
+
 	function resetTransition(span){
 		var cell = span.parentElement;
 		var selects = cell.children[0];
@@ -283,7 +279,7 @@
 			selects.children[i].selectedIndex = 0;
 		}
 	}
-	
+
 	function updateStateSelects(){
 		var states = getAllStates();
 		var texts = ["Stop"].concat(states);
@@ -294,15 +290,15 @@
 			updateTransitionSelectOptions(select, texts, values);
 		}
 	}
-	
+
 	function updateWordSelects(){
 		var selects = document.getElementsByClassName("transition_table_word_select");
 		for (var i = 0; i < selects.length; i++){
 			var select = selects[i];
 			updateTransitionSelectOptions(select, alphabet, alphabet);
-		}		
+		}
 	}
-	
+
 	function getAllStates(){
 		var states = [];
 		for(var i = 1; i < transitionTable.rows.length - 1; i++){
@@ -310,7 +306,7 @@
 		}
 		return states;
 	}
-	
+
 	function createJson(){
 		var machine = new Object();
 		machine.tape = [];
@@ -328,11 +324,11 @@
 		machine.alphabet = alphabet;
 		machine.states = getAllStates();
 		machine.transitions = [];
-		
+
 		var words = document.getElementsByClassName("transition_table_word_select");
 		var moves = document.getElementsByClassName("transition_table_move_select");
 		var states = document.getElementsByClassName("transition_table_state_select");
-		
+
 		for (var i = 0; i < words.length; i++){
 			var transition = new Object();
 			transition.word = getSelectedItem(words[i]);
@@ -340,18 +336,18 @@
 			transition.state = getSelectedItem(states[i]);
 			machine.transitions.push(transition);
 		}
-		
+
 		return JSON.stringify(machine);
 	}
-	
-	function getSelectedItem(select){		
+
+	function getSelectedItem(select){
 		var selectedIndex = select.options.selectedIndex;
 		var selectedOption = select.options[selectedIndex];
-		if (selectedOption != undefined)			
+		if (selectedOption != undefined)
 			return select.options[selectedIndex].value;
 		else return undefined;
 	}
-	
+
 	function build(){
 		var form, input;
 		form = document.createElement('form');
@@ -365,11 +361,11 @@
 		document.getElementById('hidden_form_container').appendChild(form);
 		form.submit();
 	}
-	
+
 	function openFile(){
 		document.getElementById("file-input").click();
 	}
-	
+
 	function load(input){
 		var file = input.files[0];
 		if (file == undefined)
@@ -381,7 +377,7 @@
 		};
 		var f = reader.readAsText(file);
     }
-	
+
 	function parse(json){
 		try{
 			var turingMachine = JSON.parse(json);
@@ -404,7 +400,7 @@
 				trySelectOptionOrDefault(select, item.value);
 			}
 			renderTape();
-			
+
 			var words = document.getElementsByClassName("transition_table_word_select");
 			var moves = document.getElementsByClassName("transition_table_move_select");
 			var states = document.getElementsByClassName("transition_table_state_select");
@@ -419,7 +415,7 @@
 			alert("File has incorrect format: " + e);
 		}
 	}
-	
+
 	function save(){
 		var text = createJson();
 		var filename = "TuringMachine_" + (new Date(Date.now())).toDateString();
@@ -428,4 +424,4 @@
 		element.setAttribute('download', filename);element.style.display = 'none';
 		element.click();
 	}
-</script>
+        </script>

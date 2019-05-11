@@ -1,0 +1,160 @@
+﻿.tape_left,
+.tape_right{
+	display: inline-block;
+	height: 50px;
+	margin-top: 25px;
+}
+
+.tape_table{
+	display: inline-block;
+	border-collapse:collapse;
+	height: 75px;
+}
+
+.tape tbody{
+	height: 75px;
+}
+
+.tape_item{
+	width: 30px;
+	padding: 0;
+}
+
+.tape{	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 700px;
+	margin: auto;
+}
+
+.tape_area{
+	border:1px solid black;
+	width: 90%;
+	margin-right: 5%;
+	margin-left: 5%;
+	padding: 3px;
+	overflow: auto;
+}
+
+.tape_indexes{
+	height: 25px;
+	text-align-last: center;
+	text-align: center;
+}
+.tape_values{
+	height: 49px;
+}
+
+.tape_item_select{
+	width: 30px;
+	height: 49px;
+    -webkit-appearance: none;
+	padding: 0px;
+	text-align-last: center;
+	text-align: center;
+}
+
+.transition_table_area{
+	border:1px solid black;
+	width: 90%;
+	height: 600px;
+	margin-right: 5%;
+	margin-left: 5%;
+	margin-top: 25px;
+	padding: 3px;
+	overflow: auto;
+}
+
+.transition_table_item{
+	border:1px solid black;
+	width: 100px;
+	height: 25px;
+	min-width: 100px;
+	min-height: 25px;
+	max-width: 100px;
+	max-height: 25px;
+	text-align-last: center;
+	text-align: center;
+	position: relative;
+	overflow: hidden;
+}
+
+.transition_table_item div{	
+	display: inline-block;
+	width: 80px;
+	padding-left: 10px;
+}
+
+.transition_table_word{
+	border: 0;
+	width: 15px;
+	display: inline-block;
+}
+
+.close, .close_hidden {
+	width: 10px;
+	height: 10px;
+	opacity: 0;
+	display: inline-block;
+	color: red;
+	margin-bottom: 8px;
+}
+
+.close:hover {
+	opacity: 1;
+}
+
+.close:before, .close:after {
+	position: absolute;
+	content: ' ';
+	height: 10px;
+	width: 1px;
+	background-color: red;
+}
+.close:before {
+transform: rotate(45deg);
+}
+.close:after {
+transform: rotate(-45deg);
+}
+
+.transition_table_word_select,
+.transition_table_move_select,
+.transition_table_state_select{
+	display: inline-block;
+    -webkit-appearance: none;
+	width: 20px;
+}
+
+.transition_table_state_select{
+	width: 31px;
+}
+
+.transition_table_state_select option[value="stop"]{
+	color: red;
+}
+
+#hidden_form_container{
+	display: none;
+}
+
+.buttons_area{	
+	border:1px solid black;
+	width: 90%;
+	margin-right: 5%;
+	margin-left: 5%;
+	padding: 3px;
+	margin-top: 25px;
+}
+
+.control_button{
+	width: 20%;
+	margin-left: 10%;
+	display: inline-block;
+	overflow: hidden;
+}
+
+#file-input{
+	display: none; 
+}
