@@ -1,4 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using TuringMachine.Web.Common;
+using TuringMachine.Web.Models;
 
 namespace TuringMachine.Web.Controllers
 {
@@ -12,6 +15,14 @@ namespace TuringMachine.Web.Controllers
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Compile(string turingMachineJson)
+        {
+            var turingMachineModel = JsonConvert.DeserializeObject<TuringMachineModel>(turingMachineJson);
+            var executingSnapshots = TuringMachineRunner.Run(turingMachineModel);
+            return Index();
         }
     }
 }

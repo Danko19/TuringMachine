@@ -74,7 +74,8 @@
 		</tr>
 	</table>
 </div>
-
+<div id="hidden_form_container" style="display:none;"></div>
+<button onClick="compile()">Build</button>
 <script>
     var center = 0;
 	var alphabet = [" "];
@@ -286,11 +287,11 @@
 			var select = tapeMap.get(index);
 			var selectedOption = select[select.selectedIndex];
 			if (selectedOption != undefined)
-				var value = selectedOption.value;
-			else value = " ";
+				var val = selectedOption.value;
+			else val = " ";
 			var tapeItem = new Object();
 			tapeItem.index = index;
-			tapeItem.value = value;
+			tapeItem.value = val;
 			machine.tape.push(tapeItem);
 		}
 		machine.alphabet = alphabet;
@@ -318,5 +319,19 @@
 		if (selectedOption != undefined)			
 			return select.options[selectedIndex].value;
 		else return undefined;
+	}
+	
+	function compile(){
+		var form, input;
+		form = document.createElement('form');
+		form.action = 'Home/Compile';
+		form.method = 'post';
+		input = document.createElement('input');
+		input.type = 'hidden';
+		input.name = 'turingMachineJson';
+		input.value = createJson();
+		form.appendChild(input);
+		document.getElementById('hidden_form_container').appendChild(form);
+		form.submit();
 	}
 </script>
