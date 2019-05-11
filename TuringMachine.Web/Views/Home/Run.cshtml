@@ -17,7 +17,7 @@
                 @for (int i = -10; i <= 10; i++)
                 {
                     <td class="tape_item">
-                        <select class="tape_item_select">
+                        <select class="tape_item_select" disabled>
                             <option value=" " selected>&#8195;</option>
                         </select>
                     </td>
@@ -37,7 +37,7 @@
                     '<input class="transition_table_word" type="text" value="&#8195;" size="1" maxlength="1" onchange="updateWord(this)" readonly>'
                 </div><span class="close_hidden"></span>
             </td>
-            <td class="transition_table_item">
+            <td class="transition_table_item" style="display: none">
                 <button class="transition_table_button" onClick="addWord()">Add word</button>
             </td>
         </tr>
@@ -47,15 +47,15 @@
             </td>
             <td class="transition_table_item">
                 <div>
-                    <select class="transition_table_word_select">
+                    <select class="transition_table_word_select" disabled>
                         <option value="blank" selected>...</option>
                         <option value=" ">&#8195;</option>
-                    </select><select class="transition_table_move_select">
+                    </select><select class="transition_table_move_select" disabled>
                         <option value="blank" selected>...</option>
                         <option value="Left">←</option>
                         <option value="Stay">↓</option>
                         <option value="Right">→</option>
-                    </select><select class="transition_table_state_select">
+                    </select><select class="transition_table_state_select" disabled>
                         <option value="blank" selected>...</option>
                         <option value="stop">Stop</option>
                         <option value="q0">q0</option>
@@ -64,7 +64,7 @@
             </td>
         </tr>
         <tr class="transition_table_state">
-            <td class="transition_table_item">
+            <td class="transition_table_item" style="display: none">
                 <button class="transition_table_button" onClick="addState()">Add state</button>
             </td>
         </tr>
@@ -74,12 +74,18 @@
     <button class="control_button" onClick="save()">Save</button>
     <button class="control_button" onClick="openFile()">Load</button>
     <button class="control_button" onClick="build()">Build</button>
-    <div>
-        <div id="hidden_form_container"></div>
-        <input id="file-input" type="file" name="name" onChange="load(this)" />
-        <script>
+</div>
+<div id="hidden_form_container"></div>
+<input id="file-input" type="file" name="name" onChange="load(this)" />
+<script>
     var center, alphabet, items, transitionTable, tapeMap;
-	init();
+    init();
+
+    @if (ViewBag.Json != null)
+    {
+    }
+
+    parse("@Html.Raw(ViewBag.Json)");
 
 	function init(){
 		center = 0;
@@ -141,6 +147,7 @@
 	function createTapeSelect(){
 		var select = document.createElement('select');
 		select.className += "tape_item_select"
+		select.disabled = true;
 		updateSelectOptions(select, alphabet, alphabet);
 		return select;
 	}
@@ -176,7 +183,7 @@
 		var headers = transitionTable.rows[0];
 		var cellIndex = headers.cells.length - 1;
 		var wordCell = headers.insertCell(cellIndex);
-		wordCell.innerHTML = "<div>'<input class=\"transition_table_word\" type=\"text\" size=\"1\" maxlength=\"1\" onchange=\"updateWord(this)\">'</div><span class=\"close\" onClick=\"deleteWord(this)\"></span>";
+		wordCell.innerHTML = "<div>'<input class=\"transition_table_word\" type=\"text\" size=\"1\" maxlength=\"1\" onchange=\"updateWord(this)\" readonly>'</div><span class=\"close\" onClick=\"deleteWord(this)\"></span>";
 		wordCell.className += "transition_table_item";
 		for(var i = 1; i < transitionTable.rows.length - 1; i++){
 			addTransitionCell(transitionTable.rows[i], cellIndex);
@@ -214,14 +221,17 @@
 		var div = document.createElement('div');
 		var wordSelect = document.createElement('select');
 		wordSelect.className += "transition_table_word_select";
+		wordSelect.disabled = true;
 		updateTransitionSelectOptions(wordSelect, alphabet, alphabet);
 		var transitionSelect = document.createElement('select');
 		transitionSelect.className += "transition_table_move_select";
+		transitionSelect.disabled = true;
 		updateTransitionSelectOptions(transitionSelect, ["←", "↓", "→"], ["Left", "Stay", "Right"]);
 		var states = getAllStates();
 		var stateSelect = document.createElement('select');
 		updateTransitionSelectOptions(stateSelect, states, states);
 		stateSelect.className += "transition_table_state_select";
+		stateSelect.disabled = true;
 		var span = document.createElement('span');
 		span.className += "close";
 		span.onclick = function(){
@@ -381,6 +391,7 @@
 	function parse(json){
 		try{
 			var turingMachine = JSON.parse(json);
+			console.log(turingMachine);
 			init();
 			for(var i = 1; i < turingMachine.alphabet.length; i++){
 				var cell = addWord();

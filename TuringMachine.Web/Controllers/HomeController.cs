@@ -18,7 +18,7 @@ namespace TuringMachine.Web.Controllers
             var turingMachineModel = JsonConvert.DeserializeObject<TuringMachineModel>(turingMachineJson);
             var executingSnapshots = TuringMachineRunner.Run(turingMachineModel);
             turingMachineModel.ExecutingSnapshots = executingSnapshots;
-            var resultJson = JsonConvert.SerializeObject(turingMachineModel);
+            ViewBag.Json = JsonConvert.SerializeObject(turingMachineModel).Replace("\"", "\\\"");
             return View("Run");
         }
     }
