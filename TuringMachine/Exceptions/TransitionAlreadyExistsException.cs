@@ -2,7 +2,7 @@
 
 namespace TuringMachine.Exceptions
 {
-    public class TransitionAlreadyExistsException : Exception
+    public class TransitionAlreadyExistsException : Exception, ITuringMachineException
     {
         public TransitionAlreadyExistsException(char word)
             : base($"Transition for '{word}' already exists")

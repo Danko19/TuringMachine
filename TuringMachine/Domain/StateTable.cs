@@ -19,6 +19,8 @@ namespace TuringMachine.Domain
 
         public State GetState(string stateName)
         {
+            if (stateName == TerminalState)
+                throw new TerminalStateReachedException(stateName);
             if (!states.TryGetValue(stateName, out var state))
                 throw new NotExistingStateException(stateName);
             return state;
