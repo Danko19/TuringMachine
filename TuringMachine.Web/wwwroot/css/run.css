@@ -187,6 +187,13 @@ transform: rotate(-45deg);
 	margin: 0px 4px 1px 4px;
 }
 
+.pause_icon {
+    float: left;
+    width: 25px;
+    height: 32px;
+	margin: 0px 4px 1px 4px;
+}
+
 .step_forward_icon {
     float: left;
     width: 15px;

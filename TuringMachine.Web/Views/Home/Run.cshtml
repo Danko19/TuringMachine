@@ -30,11 +30,11 @@
 <div class="executing_area">
 	<div class="executing_buttons_area">
 		<div>
-			<button class="executing_button"><img src="~/start.png" alt="Start" class="start_icon"></img></button>
-			<button class="executing_button"><img src="~/step_back.png" alt="Step back" class="step_back_icon"></img></button>
-			<button class="executing_button"><img src="~/play.png" alt="Play" class="play_icon"></img></button>
-			<button class="executing_button"><img src="~/step_forward.png" alt="Step forward" class="step_forward_icon"></img></button>
-			<button class="executing_button"><img src="~/ending.png" alt="Ending" class="ending_icon"></img></button>
+			<button class="executing_button" onclick="click_start()"><img src="~/start.png" alt="Start" class="start_icon"></img></button>
+			<button class="executing_button" onclick="click_back()"><img src="~/step_back.png" alt="Step back" class="step_back_icon"></img></button>
+			<button class="executing_button" onclick="click_play()"><img src="~/play.png" alt="Play" class="play_icon"></img><img src="~/pause.png" alt="Pause" class="pause_icon" style="display:none"></img></button>
+			<button class="executing_button" onclick="click_forward()"><img src="~/step_forward.png" alt="Step forward" class="step_forward_icon"></img></button>
+			<button class="executing_button" onclick="click_ending()"><img src="~/ending.png" alt="Ending" class="ending_icon"></img></button>
 		</div>
 	</div>
 	<select class="executing_log_area" size = 25 onChange="applySnapshot()">
@@ -93,6 +93,11 @@
     var center, alphabet, items, transitionTable, tapeMap, turingMachine;
     init();	
     parse("@Html.Raw(ViewBag.Json)");
+	var play = false;
+	setInterval(function(){
+		if (play)
+			click_forward();
+	}, 500);
 
 	function init(){
 		center = 0;
@@ -439,7 +444,11 @@
 		var list = document.getElementsByClassName("executing_log_area")[0];
 		var selectedIndex = list.options.selectedIndex;
 		if (selectedIndex == -1){
-			
+			for (var i = 0; i < turingMachine.tape.length; i++){
+				var item = turingMachine.tape[i];
+				var select = getOrCreateTapeSelect(item.index);
+				trySelectOptionOrDefault(select, item.value);
+			}
 			return;
 		}		
 		
@@ -451,5 +460,46 @@
 			trySelectOptionOrDefault(select, value);
 		}
 		renderTape();
+	}
+	
+	function click_start(){
+		var list = document.getElementsByClassName("executing_log_area")[0];
+		var selectedIndex = list.options.selectedIndex = -1;
+		applySnapshot();
+	}
+	
+	function click_back(){
+		var list = document.getElementsByClassName("executing_log_area")[0];
+		var selectedIndex = list.options.selectedIndex = list.options.selectedIndex - 1;
+		applySnapshot();
+	}
+	
+	function click_forward(){
+		var list = document.getElementsByClassName("executing_log_area")[0];
+		var newIndex = list.options.selectedIndex + 1;
+		if (newIndex < list.options.length){
+			var selectedIndex = list.options.selectedIndex = list.options.selectedIndex + 1;
+			applySnapshot();
+		}
+	}
+	
+	function click_ending(){
+		var list = document.getElementsByClassName("executing_log_area")[0];
+		var selectedIndex = list.options.selectedIndex = list.options.length - 1;
+		applySnapshot();
+	}
+	
+	function click_play(){
+		play = !play;
+		var playIcon = document.getElementsByClassName("play_icon")[0];
+		var pauseIcon = document.getElementsByClassName("pause_icon")[0];
+		if (play){
+			playIcon.style = "display:none";
+			pauseIcon.style = "";
+		}
+		else{
+			pauseIcon.style = "display:none";
+			playIcon.style = "";
+		}
 	}
 </script>
