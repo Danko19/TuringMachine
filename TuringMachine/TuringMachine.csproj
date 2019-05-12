@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Builders\TuringMachineBuilder.cs" />
     <Compile Include="Domain\TapeProvider.cs" />
+    <Compile Include="Exceptions\ITuringMachineException.cs" />
     <Compile Include="Exceptions\NotExistingStateException.cs" />
     <Compile Include="Exceptions\NotExistingTransitionException.cs" />
     <Compile Include="Exceptions\OutOfAlphabetWordException.cs" />

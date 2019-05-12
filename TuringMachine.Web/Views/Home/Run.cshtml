@@ -85,13 +85,13 @@
 <div class="buttons_area">
     <button class="control_button" onClick="save()">Save</button>
     <button class="control_button" onClick="openFile()">Load</button>
-    <button class="control_button" onClick="build()">Build</button>
+    <button class="control_button" onClick="edit()">Edit</button>
 </div>
 <div id="hidden_form_container"></div>
 <input id="file-input" type="file" name="name" onChange="load(this)" />
 <script>
     var center, alphabet, items, transitionTable, tapeMap, turingMachine;
-    init();	
+    init();
     parse("@Html.Raw(ViewBag.Json)");
 	var play = false;
 	setInterval(function(){
@@ -341,16 +341,21 @@
 		else return undefined;
 	}
 
-	function build(){
+	function edit(){
 		var form, input;
 		form = document.createElement('form');
-		form.action = 'Home/Build';
+		form.action = '';
 		form.method = 'post';
-		input = document.createElement('input');
-		input.type = 'hidden';
-		input.name = 'turingMachineJson';
-		input.value = createJson();
-		form.appendChild(input);
+		input1 = document.createElement('input');
+		input1.type = 'hidden';
+		input1.name = 'turingMachineJson';
+		input1.value = createJson();
+		input2 = document.createElement('input');
+		input2.type = 'hidden';
+		input2.name = 'edit';
+		input2.value = 'true';
+		form.appendChild(input1);
+		form.appendChild(input2);
 		document.getElementById('hidden_form_container').appendChild(form);
 		form.submit();
 	}

@@ -84,6 +84,14 @@
 <script>
     var center, alphabet, items, transitionTable, tapeMap;
 	init();
+    parse("@Html.Raw(ViewBag.Json)");
+	showError("@Html.Raw(ViewBag.Error)");
+	
+	function showError(error){
+		if (error != ""){
+			setTimeout(function(){alert(error)}, 500);
+		}
+	}
 	
 	function init(){
 		center = 0;
@@ -355,7 +363,7 @@
 	function build(){
 		var form, input;
 		form = document.createElement('form');
-		form.action = 'Home/Build';
+		form.action = '';
 		form.method = 'post';
 		input = document.createElement('input');
 		input.type = 'hidden';
@@ -383,6 +391,8 @@
     }
 	
 	function parse(json){
+		if (json == "")
+			return;
 		try{
 			var turingMachine = JSON.parse(json);
 			init();

@@ -2,6 +2,6 @@
 {
     public interface ITuringMachineException
     {
-        
+        string Message { get; }   
     }
 }

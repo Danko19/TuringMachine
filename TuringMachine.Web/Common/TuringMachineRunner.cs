@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using TuringMachine.Builders;
 using TuringMachine.Domain;
 using TuringMachine.Web.Models;
@@ -24,7 +23,7 @@ namespace TuringMachine.Web.Common
 
             var first = true;
             var stateIndex = 0;
-            foreach (var state in model.Transitions.Batch(model.Alphabet.Length))
+            foreach (var state in model.Transitions.Take(model.Alphabet.Length * model.States.Length).Batch(model.Alphabet.Length))
             {
                 var stateBuilder = first
                     ? configureStateTable.AddInitialState(model.States[stateIndex])
