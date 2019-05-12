@@ -181,15 +181,6 @@ transform: rotate(-45deg);
 }
 
 .play_icon {
-    background: url(../play.png) no-repeat;
-    float: left;
-    width: 25px;
-    height: 32px;
-	margin: 0px 4px 1px 4px;
-}
-
-.pause_icon {
-    background: url(../pause.png) no-repeat;
     float: left;
     width: 25px;
     height: 32px;
@@ -197,7 +188,6 @@ transform: rotate(-45deg);
 }
 
 .step_forward_icon {
-    background: url(../step_forward.png) no-repeat;
     float: left;
     width: 15px;
     height: 32px;
@@ -205,7 +195,6 @@ transform: rotate(-45deg);
 }
 
 .step_back_icon {
-    background: url(../step_back.png) no-repeat;
     float: left;
     width: 15px;
     height: 32px;
@@ -213,7 +202,6 @@ transform: rotate(-45deg);
 }
 
 .ending_icon {
-    background: url(../ending.png) no-repeat;
     float: left;
     width: 23px;
     height: 32px;
@@ -221,7 +209,6 @@ transform: rotate(-45deg);
 }
 
 .start_icon {
-    background: url(../start.png) no-repeat;
     float: left;
     width: 23px;
     height: 32px;
@@ -232,6 +219,7 @@ transform: rotate(-45deg);
 	width: 35px;
 	height: 36px;
 	padding: 0;
+	font-size: 6px;
 }
 
 .executing_buttons_area{
