@@ -162,12 +162,13 @@ transform: rotate(-45deg);
 .executing_area{
 	border:1px solid black;
 	width: 90%;
-	height: 254px;
-	max-height: 252px;
 	margin-right: 5%;
 	margin-left: 5%;
 	margin-top: 25px;
 	padding: 3px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .executing_log_area{
@@ -176,6 +177,66 @@ transform: rotate(-45deg);
 	height: 250px;
 	padding: 0;
 	margin: 0;
-	margin-left: 60%;
 	overflow: auto;
+}
+
+.play_icon {
+    background: url(../play.png) no-repeat;
+    float: left;
+    width: 25px;
+    height: 32px;
+	margin: 0px 4px 1px 4px;
+}
+
+.pause_icon {
+    background: url(../pause.png) no-repeat;
+    float: left;
+    width: 25px;
+    height: 32px;
+	margin: 0px 4px 1px 4px;
+}
+
+.step_forward_icon {
+    background: url(../step_forward.png) no-repeat;
+    float: left;
+    width: 15px;
+    height: 32px;
+	margin: 0px 9px 1px 9px;
+}
+
+.step_back_icon {
+    background: url(../step_back.png) no-repeat;
+    float: left;
+    width: 15px;
+    height: 32px;
+	margin: 0px 9px 1px 9px;
+}
+
+.ending_icon {
+    background: url(../ending.png) no-repeat;
+    float: left;
+    width: 23px;
+    height: 32px;
+	margin: 0px 5px 1px 5px;
+}
+
+.start_icon {
+    background: url(../start.png) no-repeat;
+    float: left;
+    width: 23px;
+    height: 32px;
+	margin: 0px 5px 1px 5px;
+}
+
+.executing_button{
+	width: 35px;
+	height: 36px;
+	padding: 0;
+}
+
+.executing_buttons_area{
+	width: 60%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }

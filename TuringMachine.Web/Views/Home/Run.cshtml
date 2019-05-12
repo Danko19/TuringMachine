@@ -29,6 +29,13 @@
 </div>
 <div class="executing_area">
 	<div class="executing_buttons_area">
+		<div>
+			<button class="executing_button"><span class="start_icon"></span></button>
+			<button class="executing_button"><span class="step_back_icon"></span></button>
+			<button class="executing_button"><span class="play_icon"></span></button>
+			<button class="executing_button"><span class="step_forward_icon"></span></button>
+			<button class="executing_button"><span class="ending_icon"></span></button>
+		</div>
 	</div>
 	<select class="executing_log_area" size = 25 onChange="applySnapshot()">
 	</select>
@@ -402,6 +409,7 @@
 
 	function save(){
 		var text = createJson();
+		console.log(text);
 		var filename = "TuringMachine_" + (new Date(Date.now())).toDateString();
 		var element = document.createElement('a');
 		element.setAttribute('href', 'data:application/json;charset=utf-8,' + encodeURIComponent(text));
